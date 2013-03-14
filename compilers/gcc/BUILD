@@ -27,6 +27,7 @@
                --with-gnu-ld                          \
                --with-system-zlib                     \
                --enable-shared                        \
+               --enable-cloog-backend=ppl             \
                $OPTS                                 &&
 
   make CFLAGS='-O' LIBCFLAGS='-g -O2' LIBCXXFLAGS='-g -O2 -fno-implicit-templates' bootstrap-lean  &&
