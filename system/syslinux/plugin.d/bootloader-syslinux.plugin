@@ -24,10 +24,14 @@ plugin_kernel_updatebootloader_syslinux() {
   local BOOTPART BOOTDIR ROOTPART TMP DONE
 
   entry() {
-    echo "label $2"
-    echo "        menu label $2"
-    echo "        linux $3/$1"
-    echo "        append $4 ro quiet"
+    echo "label $3"
+    echo "        menu label $3"
+    echo "        linux $4/$1"
+    if [ -f "/boot/$2" ] ; then
+      echo "        append $5 ro quiet initrd=$4/$2"
+    else
+      echo "        append $5 ro quiet"
+    fi
     echo ""
   }
 
@@ -54,7 +58,7 @@ plugin_kernel_updatebootloader_syslinux() {
     if [ -z "$DONE" ]; then
       if echo "$LINE" | grep -q "^\s*label" ; then
         # insert
-        entry "vmlinuz-$1-$(arch)" "$2" "$BOOTDIR" "$ROOTPART" >> $TMP
+        entry "vmlinuz-$1-$(arch)" "initramfs-$1-$(arch).img" "$2" "$BOOTDIR" "$ROOTPART" >> $TMP
         DONE="x"
       fi
     fi
